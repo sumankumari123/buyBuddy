@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
-import { addToCart, fetchProduct, removeCart } from "../redux/slices/productSlice";
+import {
+  addToCart,
+  fetchProduct,
+  removeCart,
+} from "../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const ProductCard = () => {
@@ -14,8 +18,41 @@ const ProductCard = () => {
     dispatch(fetchProduct());
   }, []);
   return (
-    <div className=" grid rounded  sm:grid-cols-3 gap-4 bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300">
-      {fechItems ? (
+    <div className=" grid rounded  sm:grid-cols-3 gap-4 bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition duration-300 ">
+      {loading ? (
+          <>
+            {[...Array(6)].map((item) => (
+              <div
+                key={item}
+                className="bg-white rounded-xl shadow-md p-5 animate-pulse"
+              >
+                {/* Image skeleton */}
+                <div className="h-64 bg-gray-200 rounded-lg"></div>
+
+                {/* Title skeleton */}
+                <div className="h-6 bg-gray-200 rounded mt-5 w-3/4"></div>
+
+                {/* Brand skeleton */}
+                <div className="h-5 bg-gray-200 rounded mt-3 w-1/2"></div>
+
+                {/* Price skeleton */}
+                <div className="h-5 bg-gray-200 rounded mt-3 w-1/4"></div>
+
+                {/* Rating skeleton */}
+                <div className="h-5 bg-gray-200 rounded mt-3 w-1/3"></div>
+
+                {/* Button skeleton */}
+                <div className="h-12 bg-gray-200 rounded-lg mt-4"></div>
+              </div>
+            ))}
+          </>
+      ) : error ? (
+        <>
+          <div className="col-span-full flex justify-center items-center">
+            <h1 className="text-2xl font-bold text-red-500">{error}</h1>
+          </div>
+        </>
+      ) : fechItems && fechItems?.length > 0 ? (
         fechItems.map((product, index) => (
           <div
             key={product.id}
@@ -49,7 +86,7 @@ const ProductCard = () => {
               <p className="text-gray-500 text-lg mt-1">⭐ {product.rating}</p>
 
               {/* Add To Cart */}
-              
+
               {cartItem &&
               (cartItem?.length > 0) &
                 cartItem.some((c) => c.id == product?.id) ? (
@@ -71,9 +108,9 @@ const ProductCard = () => {
           </div>
         ))
       ) : (
-        <>
+        <div className="text-center">
           <h1>There is no Product</h1>
-        </>
+        </div>
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import Navbar from "./component/Navbar";
 import ProductCard from "./component/ProductCard";
 import Cart from "./component/Cart";
 
+
 function App() {
   return (
     <>
